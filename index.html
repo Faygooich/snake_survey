@@ -182,6 +182,8 @@ function plingMode(mode) {
   } else if (mode === '22G') {
     /* дикий питч во время глитча: от 0.35 до 2.4 */
     pling('sym_sound_22.mp3', 0.35 + Math.random() * 2.05);
+  } else if (mode === '03') {
+    pling('sym_sound_03.mp3');
   } else {
     const f = RND_FILES[Math.random() * RND_FILES.length | 0];
     pling(f, 1 + (Math.random() * 0.2 - 0.1));
