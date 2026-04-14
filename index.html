@@ -93,8 +93,8 @@ html, body {
 /* ══════════════════════════════════════════
    CONFIG  — поменяй имена здесь
 ══════════════════════════════════════════ */
-const NAME1 = '0003';   // первое имя
-const NAME2 = 'Василиса Летова';     // второе имя
+const NAME1 = '0001';   // первое имя
+const NAME2 = 'Хизия';     // второе имя
 
 /* ══════════════════════════════════════════
    AUDIO ENGINE
@@ -183,7 +183,7 @@ function plingMode(mode) {
     /* дикий питч во время глитча: от 0.35 до 2.4 */
     pling('sym_sound_22.mp3', 0.35 + Math.random() * 2.05);
   } else if (mode === '03') {
-    pling('sym_sound_03.mp3');
+    pling('sym_sound_01.mp3');
   } else {
     const f = RND_FILES[Math.random() * RND_FILES.length | 0];
     pling(f, 1 + (Math.random() * 0.2 - 0.1));
@@ -244,8 +244,8 @@ const SCRIPT = [
   { t:'L', x:'Кто-то хочет любви и мира во всем мире',                    m:'rnd' },
   { t:'L', x:'Кто-то хочет внимания',                                      m:'rnd' },
   { t:'L', x:'Кто-то хочет денег',                                         m:'rnd' },
-  { t:'L', x:'А кто-то, чтобы её избавили от единственного изъяна', m:'rnd' },
-  { t:'L', x:'в виде родного отца',                                         m:'rnd' },
+  { t:'L', x:'А кто-то', m:'rnd' },
+  { t:'L', x:'...',                                         m:'rnd', slow:true },
   /* — Input 2: random sounds for prompt — */
   { t:'I', n:2, p:'Попробуй еще разок:\n',                                 m:'rnd' },
   { t:'L', x:'Оххх',                                                        m:'rnd' },
